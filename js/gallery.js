@@ -2,11 +2,12 @@ import images from './data.js';
 
 const gallery = document.querySelector('.gallery');
 
-// Функція для очищення некоректних символів у URL
+// Функція очищення URL
 function cleanUrl(url) {
   return url.replace(/[<>]/g, '');
 }
 
+// Генерація розмітки галереї з очищенням URL
 const markup = images.map(({ preview, original, description }) => {
   return `<li class="gallery-item">
     <a class="gallery-link" href="${cleanUrl(original)}">
@@ -22,6 +23,7 @@ const markup = images.map(({ preview, original, description }) => {
 
 gallery.insertAdjacentHTML('beforeend', markup);
 
+// Додавання події для відкриття модального вікна
 gallery.addEventListener('click', event => {
   event.preventDefault();
 
