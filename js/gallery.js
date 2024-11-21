@@ -2,13 +2,18 @@ import images from './data.js';
 
 const gallery = document.querySelector('.gallery');
 
+// Функція для очищення некоректних символів у URL
+function cleanUrl(url) {
+  return url.replace(/[<>]/g, '');
+}
+
 const markup = images.map(({ preview, original, description }) => {
   return `<li class="gallery-item">
-    <a class="gallery-link" href="${original}">
+    <a class="gallery-link" href="${cleanUrl(original)}">
       <img
         class="gallery-image"
-        src="${preview}"
-        data-source="${original}"
+        src="${cleanUrl(preview)}"
+        data-source="${cleanUrl(original)}"
         alt="${description}"
       />
     </a>
