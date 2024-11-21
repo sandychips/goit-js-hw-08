@@ -4,41 +4,31 @@ const gallery = document.querySelector('.gallery');
 
 const markup = images.map(({ preview, original, description }) => {
   return `<li class="gallery-item">
-  <a class="gallery-link" href="${removeFirstLaseChar(original)}">
-    <img
-      class="gallery-image"
-      src="${removeFirstLaseChar(preview)}"
-      data-source="${removeFirstLaseChar(original)}"
-      alt="${description}"
-    />
-  </a>
-</li>`;
-});
+    <a class="gallery-link" href="${original}">
+      <img
+        class="gallery-image"
+        src="${preview}"
+        data-source="${original}"
+        alt="${description}"
+      />
+    </a>
+  </li>`;
+}).join('');
 
-gallery.insertAdjacentHTML('beforeend', markup.join(''));
+gallery.insertAdjacentHTML('beforeend', markup);
 
 gallery.addEventListener('click', event => {
   event.preventDefault();
+
   if (event.target.nodeName === 'IMG') {
     openModal(event.target.dataset.source);
-  }
-});
-
-document.addEventListener('keydown', event => {
-  const modal = document.querySelector('.modal');
-  if (
-    event.code === 'Enter' ||
-    event.code === 'NumpadEnter' ||
-    (event.code === 'Space' && !modal)
-  ) {
-    openModal(event.target.querySelector('img').dataset.source);
   }
 });
 
 function openModal(src) {
   const instance = basicLightbox.create(
     `
-    	<img src="${src}" width="1112" height="640">
+      <img src="${src}" width="1112" height="640">
     `,
     {
       className: 'modal',
@@ -48,7 +38,7 @@ function openModal(src) {
       },
 
       onClose: instance => {
-        document.addEventListener('keydown', onEscapePress);
+        document.removeEventListener('keydown', onEscapePress);
       },
     }
   );
@@ -60,8 +50,4 @@ function openModal(src) {
       instance.close();
     }
   }
-}
-
-function removeFirstLaseChar(string) {
-  return string.slice(1, string.length - 1);
 }
